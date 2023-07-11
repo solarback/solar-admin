@@ -6,6 +6,7 @@ import ErrorPage from './components/ErrorPage';
 import Home from './components/Home';
 import Devices from './components/Devices';
 import Login from './components/Login';
+import Account from './components/Account';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
       {
         path: "/devices",
         element: <Devices />,
+      }, 
+      {
+        path: "/account/:id",
+        element: <Account />,
       }, 
       {
         path: "/login",

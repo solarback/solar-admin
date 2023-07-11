@@ -1,7 +1,19 @@
-import { Link, Outlet } from 'react-router-dom';
-import Home from './components/Home'
+import { useState } from 'react';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
+import Alert from './components/Alert';
 
 function App() {
+  const [jwtToken, setJwtToken] = useState("")
+  const [alertMessage, setAlertMessage] = useState("")
+  const [alertClassName, setAlertClassName] = useState("")
+
+  const navigate = useNavigate();
+
+  const logOut = () => {
+    setJwtToken("")
+    navigate("/")
+  }
+
   return (
     <div className="container">
       <div className="row">
@@ -9,7 +21,11 @@ function App() {
           <h1>Go scan</h1>
         </div>
         <div className="col text-end">
-          <a href="#!"><span className="badge bg-success">Login</span></a>
+          {
+            jwtToken === ""
+            ? <Link to="/login"><span className="badge bg-success">Login</span></Link>
+            : <a href="#!" onClick={logOut}><span className="badge bg-danger">Logout</span></a>
+          }
         </div>
         <hr className="mb-3"></hr>
       </div>
@@ -19,13 +35,27 @@ function App() {
           <nav>
             <div className="list-group">
               <Link to="/" className="list-group-item list-group-item-action">Home</Link>
-              <Link to="/devices" className="list-group-item list-group-item-action">Devices</Link>
-              
+              {jwtToken !== "" &&
+                <>
+                  <Link to="/devices" className="list-group-item list-group-item-action">Devices</Link>
+                </>
+              }
             </div>
           </nav>
         </div>
         <div className="col-md-10">
-          <Outlet />
+          <Alert
+             message={alertMessage}
+             className={alertClassName}
+          />
+          <Outlet context={{
+            jwtToken, 
+            setJwtToken,
+            setAlertClassName,
+            setAlertMessage,
+          }
+
+          }/>
         </div>
       </div>
     </div>

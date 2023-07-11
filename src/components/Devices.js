@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Devices =() => {
-    const [movies, setMovies] = useState([]);
+    const [devices, setDevices] = useState([]);
 
     useEffect ( () => {
         let deviceList = [
@@ -21,7 +22,7 @@ const Devices =() => {
             }
         ];
     
-        setMovies(movies)
+        setDevices(deviceList)
     }, [])
     
 
@@ -32,13 +33,24 @@ const Devices =() => {
         <table className="table table-stripped table-hover">
             <thead>
                 <tr>
-                    <th>id</th>
                     <th>Account</th>
                     <th>Last Activity</th>
                     <th>Creation Date</th>
                 </tr>
             </thead>
             <tbody>
+                {devices.map((d) => 
+                <tr key={d.id}>
+                    <td>
+                        <Link to={`/account/${d.id}`}>
+                            {d.accountUserName}
+                        </Link>
+                    </td>
+                    <td>{d.lastActivity}</td>
+                    <td>{d.creationDate}</td>
+                </tr>
+            )}
+
             </tbody>
         </table>
 
